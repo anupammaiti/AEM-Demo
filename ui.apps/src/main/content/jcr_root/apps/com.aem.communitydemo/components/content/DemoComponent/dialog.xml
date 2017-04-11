@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Dialog"
+    title="Demo Component"
+    xtype="dialog">
+    <items
+        jcr:primaryType="cq:Widget"
+        xtype="tabpanel">
+        <items jcr:primaryType="cq:WidgetCollection">
+            <tab
+                jcr:primaryType="cq:Panel"
+                title="Demo Component Config">
+                <items jcr:primaryType="cq:WidgetCollection">
+                    <image
+                        jcr:primaryType="cq:Widget"
+                        cropParameter="./imageCrop"
+                        ddGroups="[media]"
+                        fieldLabel="Image"
+                        fileNameParameter="./fileName"
+                        fileReferenceParameter="./fileReference"
+                        height="150"
+                        name="./file"
+                        rotateParameter="./imageRotate"
+                        title="Image"
+                        width="200"
+                        xtype="html5smartimage"/>
+                    <title
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Please enter the title here"
+                        fieldLabel="Title"
+                        name="./title"
+                        required="{Boolean}true"
+                        xtype="textfield"/>
+                    <description
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Please enter the Description"
+                        fieldLabel="Description"
+                        name="./description"
+                        xtype="textfield"/>
+                    <link
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Please enter the path to link the image"
+                        fieldLabel="Link Image To"
+                        name="./link"
+                        xtype="pathfield"/>
+                </items>
+            </tab>
+        </items>
+    </items>
+</jcr:root>
