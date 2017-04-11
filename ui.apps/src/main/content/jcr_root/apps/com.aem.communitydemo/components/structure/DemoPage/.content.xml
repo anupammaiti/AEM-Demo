@@ -3,4 +3,5 @@
     jcr:description="This is the Page Component for demo page. "
     jcr:primaryType="cq:Component"
     jcr:title="Demo Page Component"
-    sling:resourceSuperType="foundation/components/page"/>
+    sling:resourceSuperType="wcm/foundation/components/page"
+    componentGroup=".hidden"/>
