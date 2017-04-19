@@ -88,6 +88,11 @@
         </profile>
     </profiles>
     <dependencies>
+    	<dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>uber-jar</artifactId>
+            <classifier>obfuscated-apis</classifier>
+        </dependency>
         <!-- OSGi Dependencies -->
         <dependency>
             <groupId>org.apache.felix</groupId>
