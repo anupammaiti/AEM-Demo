@@ -33,7 +33,7 @@ import java.io.IOException;
  */
 @SuppressWarnings("serial")
 @SlingServlet(resourceTypes = "com.aem.communitydemo/structure/page")
-public class SimpleServlet extends SlingSafeMethodsServlet {
+public class SimpleServlet extends SlingAllMethodsServlet {
 
     @Override
     protected void doGet(final SlingHttpServletRequest req,

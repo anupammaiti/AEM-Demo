@@ -37,7 +37,7 @@ public class DemoModel extends WCMUsePojo {
 		title = properties.get("title", "Default Title");
 		description = properties.get("description", "Default Description");
 		color = properties.get("color","black");
-		richText = properties.get("richText","<p>hello demo</p>");
+		richText = properties.get("richtext","<p>hello demo</p>");
 		
 		title = title.toUpperCase();
 		description = description.toUpperCase();
