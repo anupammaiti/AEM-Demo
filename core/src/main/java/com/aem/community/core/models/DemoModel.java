@@ -3,17 +3,19 @@ package com.aem.community.core.models;
 import org.apache.sling.api.resource.ValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.adobe.cq.sightly.WCMUse;
 import com.adobe.cq.sightly.WCMUsePojo;
 
 public class DemoModel extends WCMUsePojo {
 
     private static final Logger LOG = LoggerFactory.getLogger(DemoModel.class);
 
-    ValueMap properties;
-	String title;
-	String description;
-	String color;
-	String richText;
+    private ValueMap properties;
+	private String title;
+	private String description;
+	private String color;
+	private String richText;
 	
     public String getTitle() {
 		return title;
