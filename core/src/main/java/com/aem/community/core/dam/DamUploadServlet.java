@@ -33,8 +33,8 @@ public class DamUploadServlet extends SlingAllMethodsServlet{
 	 */
 	private static final String REQUEST_UPLOAD_PATH = "uploadPath";
 	
-	@Reference
-	private DamUploadService damUploadService;
+	//@Reference
+	//private DamUploadService damUploadService;
 	
     @Reference
     private SlingRepository repository;
@@ -52,6 +52,7 @@ public class DamUploadServlet extends SlingAllMethodsServlet{
     protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
     	
     	try {
+    		log.info("Inside DO POST of Servlet");
     		//Fetch DAM Upload Path from Request
     		String uploadPath = "";
     		if(request.getParameter(REQUEST_UPLOAD_PATH) != null) {
@@ -69,11 +70,13 @@ public class DamUploadServlet extends SlingAllMethodsServlet{
                 		+ REQUEST_PARAMETER_FILE + 
                 		" or the file has a size of 0.  Aborting file upload");
                 return;
+            } else {
+            	response.getWriter().println("Found file...");
             }
 
     		boolean status = false;
     		String fileName = rp.getFileName();
-    		status = damUploadService.uploadAsset(fileName, rp.getContentType(), uploadPath, rp.getInputStream());
+    		//status = damUploadService.uploadAsset(fileName, rp.getContentType(), uploadPath, rp.getInputStream());
             
     		if (status) {
             	response.setStatus(200);

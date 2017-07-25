@@ -6,6 +6,8 @@ public class Product {
 	private String description;
 	private String url;
 	private String subtitle;
+	private String price;
+	private String image;
 	
 	public String getTitle() {
 		return title;
@@ -30,5 +32,17 @@ public class Product {
 	}
 	public void setSubtitle(String subtitle) {
 		this.subtitle = subtitle;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 }
