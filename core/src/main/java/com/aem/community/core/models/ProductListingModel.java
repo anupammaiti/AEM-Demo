@@ -75,30 +75,21 @@ public class ProductListingModel extends WCMUsePojo {
 					}
 				}
 			} else if(mode.equalsIgnoreCase("manual")) {
-				log.info("Inside MANUAL");
 				Resource componentResource = getResource();
 				Resource productsResource = componentResource.getChild("products");
 				
 				if((productsResource != null) && productsResource instanceof Resource) {
-					log.info("Found Products Resource");
 					Iterable<Resource> productsChildren = productsResource.getChildren();
 					for(Resource productResource : productsChildren) {
-						log.info("Iterating Products... " + productResource.getName());
 						ValueMap productProperties = productResource.getValueMap();
-						log.info("Got value map");
+					
 						if(productProperties != null) {
 							String pageTitle = productProperties.get("title","Default Title");
-							log.info("title :: " + pageTitle);
 							String pageDesc = productProperties.get("description","Default Description");
-							log.info("description :: " + pageDesc);
 							String url = productProperties.get("url","/content/dam");
-							log.info("url :: " + url);
 							String subTitle = productProperties.get("subtitle","Default Subtitle");
-							log.info("subtitle :: " + subTitle);
 							String price = productProperties.get("price","0.00");
-							log.info("price :: " + price);
-							String image = productProperties.get("image","/content/dam");
-							log.info("image :: " + image);
+							String image = productProperties.get("image","/content/dam");							
 							
 							Product productObj = new Product();
 							productObj.setTitle(pageTitle);
@@ -107,12 +98,8 @@ public class ProductListingModel extends WCMUsePojo {
 							productObj.setSubtitle(subTitle);
 							productObj.setPrice(price);
 							productObj.setImage(image);
-									
-							log.info("done with setters");
 							
 							productList.add(productObj);
-							
-							log.info("added product object to list");
 						}
 					}
 				}
