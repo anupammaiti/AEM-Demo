@@ -1,5 +1,7 @@
 package com.aem.community.core.servlets;
 
+import org.apache.felix.scr.annotations.Properties;
+import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -28,7 +30,10 @@ import java.util.List;
  * idempotent. For write operations use the {@link SlingAllMethodsServlet}.
  */
 @SuppressWarnings("serial")
-@SlingServlet(resourceTypes = "com.aem.communitydemo/structure/page")
+@SlingServlet(paths = "/bin/fetchSellableProducts", methods = "POST", metatype=true)
+@Properties({
+        @Property(name = "service.pid", value = "com.aem.community.core.servlets.FetchProductDataServlet", propertyPrivate = false),
+        @Property(name = "service.vendor", value = "Fleetcor", propertyPrivate = false) })
 public class FetchProductDataServlet extends SlingAllMethodsServlet {
 
 	private static final Logger log = LoggerFactory.getLogger(FetchProductDataServlet.class);
@@ -38,12 +43,12 @@ public class FetchProductDataServlet extends SlingAllMethodsServlet {
 	 
 	ResourceResolver resourceResolver;     	     
 	
-	private static final String PRODUCTS_FOLDER_PATH = "/etc/commerce/products";
+	private static final String PRODUCTS_FOLDER_PATH = "/etc/commerce/products/sprint/en";
 	
 	List<Product> sellableProductsList;
 	
     @Override
-    protected void doGet(final SlingHttpServletRequest req,
+    protected void doPost(final SlingHttpServletRequest req,
             final SlingHttpServletResponse resp) throws ServletException, IOException {
         
     	resp.setContentType("application/json");
@@ -59,8 +64,18 @@ public class FetchProductDataServlet extends SlingAllMethodsServlet {
 	    	sellableProductsList = new ArrayList<Product>();
 	    	
 	    	for(Resource productType : productTypes){
-	    		List<Product> productList = getSellableProducts(productType);
-	    		sellableProductsList.addAll(productList);
+	    		List<Product> productTypeList = new ArrayList<Product>();
+	    		if(productType.getName().equalsIgnoreCase("accessories")){
+	    			productTypeList = getAccessories(productType);
+	    		} else if(productType.getName().equalsIgnoreCase("devices")){
+	    			productTypeList = getDevices(productType);
+	    		} else if(productType.getName().equalsIgnoreCase("plans")){
+	    			productTypeList = getPlans(productType);
+	    		} else if(productType.getName().equalsIgnoreCase("services")){
+	    			productTypeList = getServices(productType);
+	    		}
+	    		
+	    		sellableProductsList.addAll(productTypeList);
 	    	}
 	    	
 	    	Gson gson = new Gson();
@@ -70,25 +85,148 @@ public class FetchProductDataServlet extends SlingAllMethodsServlet {
     	}
     }
     
-    private List<Product> getSellableProducts(Resource resource){
-        List<Product> sellableProducts = new ArrayList<Product>();
-        Product product = null;
+    private List<Product> getAccessories(Resource resource) {
+    	List<Product> accessoriesList = new ArrayList<Product>();    	
+    	Product product = null;
         
-        Iterable<Resource> productResources = resource.getChildren();
-        for(Resource productResource : productResources){
-            ValueMap productProperties = productResource.adaptTo(ValueMap.class);  
-        	String availabilityStatus = productProperties.get("availabilityStatus","none");
+        Iterable<Resource> productCategoryResources = resource.getChildren();
+        for(Resource productCategoryResource : productCategoryResources){
         	
-        	if(availabilityStatus.equalsIgnoreCase("sellable")) {
-        		//Fetch other properties
-        		
-        		product = new Product();
-        		//Set properties in Product Object
-        		
-        		sellableProducts.add(product);
+        	Iterable<Resource> productResources = productCategoryResource.getChildren();
+        	for(Resource productResource : productResources){
+        		ValueMap productProperties = productResource.adaptTo(ValueMap.class);  
+        		String availabilityStatus = productProperties.get("availabilityStatus","undefined");
+        	
+        		if(availabilityStatus.equalsIgnoreCase("sellable")) {       			       					
+        			//Fetch other properties
+        			String title = productProperties.get("jcr:title","");
+        			String description = productProperties.get("shortDescription","");
+        			String imagePath = "";
+        			
+        			//Fetch Image/Asset Node
+        			Resource assetsResource = productResource.getChild("assets");
+        			if((assetsResource != null) && (assetsResource instanceof Resource)){
+        				Iterable<Resource> assetResources = assetsResource.getChildren();
+        				for(Resource assetResource : assetResources){
+        					if(assetResource.getName().equalsIgnoreCase("asset")){
+        						ValueMap assetProperties = assetResource.adaptTo(ValueMap.class);  
+        						imagePath = assetProperties.get("fileReference","");
+        					}       					
+        				}
+        			}
+        			
+        			//Set properties in Product Object
+        			product = new Product();
+        			product.setTitle(title);
+        			product.setDescription(description);
+        			product.setImage(imagePath);
+        			
+        			accessoriesList.add(product);
+        		}
         	}             
         }
-          
-        return sellableProducts;
+    	
+    	return accessoriesList;
+    }
+    
+    private List<Product> getDevices(Resource resource) {
+    	List<Product> devicesList = new ArrayList<Product>();
+    	Product product = null;
+        
+    	Iterable<Resource> productCategoryFolders = resource.getChildren();
+        for(Resource productCategoryFolder : productCategoryFolders){
+        	String deviceType = productCategoryFolder.getName();
+        	
+        	Iterable<Resource> productCategoryResources = productCategoryFolder.getChildren();
+        	for(Resource productCategoryResource : productCategoryResources){
+        		ValueMap productCategoryProperties = productCategoryResource.adaptTo(ValueMap.class);
+        		
+	        	Iterable<Resource> productResources = productCategoryResource.getChildren();
+	        	for(Resource productResource : productResources){
+	        		ValueMap productProperties = productResource.adaptTo(ValueMap.class);  
+	        		String availabilityStatus = productProperties.get("availabilityStatus","undefined");
+	        	
+	        		if(availabilityStatus.equalsIgnoreCase("sellable")) {       			       					
+	        			//Fetch other properties
+	        			String title = productProperties.get("jcr:title","");
+	        			String description = productCategoryProperties.get("deviceLongDescription","");
+	        			String imagePath = "";
+	        			
+	        			//Fetch Image/Asset Node
+	        			Resource assetsResource = productResource.getChild("assets");
+	        			if((assetsResource != null) && (assetsResource instanceof Resource)){
+	        				Iterable<Resource> assetResources = assetsResource.getChildren();
+	        				for(Resource assetResource : assetResources){
+	        					if(assetResource.getName().equalsIgnoreCase("asset")){
+	        						ValueMap assetProperties = assetResource.adaptTo(ValueMap.class);  
+	        						imagePath = assetProperties.get("fileReference","");
+	        					}       					
+	        				}
+	        			}
+	        			
+	        			//Set properties in Product Object
+	        			product = new Product();
+	        			product.setTitle(title);
+	        			product.setDescription(description);
+	        			product.setImage(imagePath);
+	        			
+	        			devicesList.add(product);
+	        		}
+	        	}  
+        	}
+        }
+    	
+    	return devicesList;
+    }
+    
+    private List<Product> getPlans(Resource resource) {
+    	List<Product> plansList = new ArrayList<Product>();
+    	
+Product product = null;
+        
+        Iterable<Resource> productCategoryResources = resource.getChildren();
+        for(Resource productCategoryResource : productCategoryResources){
+        	
+        	Iterable<Resource> productResources = productCategoryResource.getChildren();
+        	for(Resource productResource : productResources){
+        		ValueMap productProperties = productResource.adaptTo(ValueMap.class);  
+        		String availabilityStatus = productProperties.get("availabilityStatus","undefined");
+        	
+        		if(availabilityStatus.equalsIgnoreCase("sellable")) {       			       					
+        			//Fetch other properties
+        			String title = productProperties.get("jcr:title","");
+        			String description = productProperties.get("shortDescription","");
+        			String imagePath = "";
+        			
+        			//Fetch Image/Asset Node
+        			Resource assetsResource = productResource.getChild("assets");
+        			if((assetsResource != null) && (assetsResource instanceof Resource)){
+        				Iterable<Resource> assetResources = assetsResource.getChildren();
+        				for(Resource assetResource : assetResources){
+        					if(assetResource.getName().equalsIgnoreCase("asset")){
+        						ValueMap assetProperties = assetResource.adaptTo(ValueMap.class);  
+        						imagePath = assetProperties.get("fileReference","");
+        					}       					
+        				}
+        			}
+        			
+        			//Set properties in Product Object
+        			product = new Product();
+        			product.setTitle(title);
+        			product.setDescription(description);
+        			product.setImage(imagePath);
+        			
+        			plansList.add(product);
+        		}
+        	}             
+        }
+    	
+    	return plansList;
+    }
+    
+    private List<Product> getServices(Resource resource) {
+    	List<Product> servicesList = new ArrayList<Product>();
+    	
+    	return servicesList;
     }
 }
