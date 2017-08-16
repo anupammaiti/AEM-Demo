@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Sellable Products Summary Component"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/foundation/container">
+        <layout
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/foundation/layouts/fixedcolumns"
+            margin="{Boolean}false"/>
+        <items jcr:primaryType="nt:unstructured">
+            <column
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
+                    <title
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/foundation/form/textfield"
+                        fieldLabel="Title"
+                        name="./title"/>
+                    <description
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/foundation/form/textarea"
+                        fieldLabel="Description"
+                        name="./description"/>
+                    <productCategory
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/foundation/form/select"
+                        defaultValue="accessories"
+                        fieldLabel="Product Category"
+                        name="./productCategory">
+                        <options jcr:primaryType="cq:WidgetCollection">
+                            <all
+                                jcr:primaryType="nt:unstructured"
+                                text="All"
+                                value="all"/>
+                            <accessories
+                                jcr:primaryType="nt:unstructured"
+                                text="Accessories"
+                                value="accessories"/>
+                            <devices
+                                jcr:primaryType="nt:unstructured"
+                                text="Devices"
+                                value="devices"/>
+                            <plans
+                                jcr:primaryType="nt:unstructured"
+                                text="Plans"
+                                value="plans"/>
+                            <services
+                                jcr:primaryType="nt:unstructured"
+                                text="Services"
+                                value="services"/>
+                        </options>
+                    </productCategory>
+                    <productsFolderPath
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/foundation/form/pathbrowser"
+                        fieldLabel="Products Folder Path"
+                        name="./productsFolderPath"
+                        rootPath="/etc/commerce/products"/>
+                </items>
+            </column>
+        </items>
+    </content>
+</jcr:root>

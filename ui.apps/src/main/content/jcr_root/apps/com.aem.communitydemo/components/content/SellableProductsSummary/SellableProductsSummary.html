@@ -1,0 +1,17 @@
+<div class="container" data-sly-use.model="com.aem.community.core.models.SellableProductsSummaryModel">
+	<div class="row" data-sly-list="${model.sellableProducts}">
+		<div class="col-md-4">
+        	<img src="${item.image}>
+        </div>
+        <div class="col-md-8">
+			<div class="row">
+            	<span>Title:</span> ${item.title}
+            </div>
+            <div class="row">
+            	<span>Description:</span> ${item.description}
+            </div>
+        </div>
+    </div>
+</div>
+
+

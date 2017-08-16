@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!--f
  |  Copyright 2015 Adobe Systems Incorporated
  |
  |  Licensed under the Apache License, Version 2.0 (the "License");
@@ -404,10 +404,10 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-        <groupId>biz.aQute</groupId>
-        <artifactId>bndlib</artifactId>
-        <version>1.50.0</version>
-        <scope>provided</scope>
+		        <groupId>biz.aQute</groupId>
+		        <artifactId>bndlib</artifactId>
+		        <version>1.50.0</version>
+		        <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
@@ -515,6 +515,12 @@
 			    <version>2.3</version>
 			    <scope>provided</scope>
 			</dependency>
+			<dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.3.2</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

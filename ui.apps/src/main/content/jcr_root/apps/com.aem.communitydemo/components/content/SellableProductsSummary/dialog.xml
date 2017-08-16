@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Dialog"
+    title="Sellable Products Summary Component"
+    xtype="dialog">
+    <items
+        jcr:primaryType="cq:Widget"
+        xtype="tabpanel">
+        <items jcr:primaryType="cq:WidgetCollection">
+            <tab
+                jcr:primaryType="cq:Panel"
+                title="Configuration">
+                <items jcr:primaryType="cq:WidgetCollection">
+                    <title
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Please enter the title here"
+                        fieldLabel="Title"
+                        name="./title"
+                        required="{Boolean}true"
+                        xtype="textfield"/>
+                    <description
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Please enter the Description"
+                        fieldLabel="Description"
+                        name="./description"
+                        xtype="textfield"/>
+                    <productCategory
+                        jcr:primaryType="nt:unstructured"
+                        defaultValue="accessories"
+                        fieldLabel="Product Category"
+                        name="./productCategory"
+                        type="select"
+                        xtype="selection">
+                        <options jcr:primaryType="cq:WidgetCollection">
+                            <all
+                                jcr:primaryType="nt:unstructured"
+                                text="All"
+                                value="all"/>
+                            <accessories
+                                jcr:primaryType="nt:unstructured"
+                                text="Accessories"
+                                value="accessories"/>
+                            <devices
+                                jcr:primaryType="nt:unstructured"
+                                text="Devices"
+                                value="devices"/>
+                            <plans
+                                jcr:primaryType="nt:unstructured"
+                                text="Plans"
+                                value="plans"/>
+                            <services
+                                jcr:primaryType="nt:unstructured"
+                                text="Services"
+                                value="services"/>
+                        </options>
+                    </productCategory>
+                    <productsFolderPath
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Please enter the path to link the image"
+                        fieldLabel="Link Image To"
+                        name="./link"
+                        xtype="pathfield"/>
+                </items>
+            </tab>
+        </items>
+    </items>
+</jcr:root>
